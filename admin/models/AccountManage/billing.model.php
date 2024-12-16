@@ -35,7 +35,7 @@ class Billing extends Model implements JsonSerializable{
 		global $db,$tx;
 		$db->query("delete from {$tx}billings where id={$id}");
 	}
-	public function jsonSerialize():mixed{
+	public function jsonSerialize(){
 		return get_object_vars($this);
 	}
 	public static function all(){

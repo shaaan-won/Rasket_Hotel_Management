@@ -4,6 +4,7 @@ echo Page::body_open();
 echo Html::link(["class"=>"btn btn-success", "route"=>"customerdetail", "text"=>"Manage CustomerDetail"]);
 echo Page::context_open();
 echo Form::open(["route"=>"customerdetail/save"]);
+	echo Form::input(["label"=>"Name","type"=>"text","name"=>"name"]);
 	echo Form::input(["label"=>"First Name","type"=>"text","name"=>"first_name"]);
 	echo Form::input(["label"=>"Last Name","type"=>"text","name"=>"last_name"]);
 	echo Form::input(["label"=>"Email","type"=>"text","name"=>"email"]);

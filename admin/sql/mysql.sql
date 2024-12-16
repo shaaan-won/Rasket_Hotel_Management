@@ -491,6 +491,52 @@ VALUES
 ('Invoice 3', 3, 'Bob Johnson', 3, 150.00, 15.00, 'Overdue');
 
 
+--bookings table for invoice extract
+
+-- Create the bookings table
+Drop table if exists ht_bookings;
+CREATE TABLE ht_bookings (
+    `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT, -- Unique booking ID
+    `created_at` DATETIME NOT NULL,                            -- Booking creation timestamp
+    `order_total` FLOAT NOT NULL,                              -- Total order amount
+    `paid_total` FLOAT NOT NULL,                               -- Total amount paid
+    `remark` TEXT DEFAULT NULL,                                -- Additional remarks
+    `customer_detail_id` INT(10) UNSIGNED NOT NULL                   -- Associated customer ID
+);
+
+-- Create the booking details table for invoices
+Drop table if exists ht_booking_details;
+CREATE TABLE ht_booking_details (
+    `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT , -- Unique booking detail ID
+    `booking_id` INT(10) UNSIGNED NOT NULL,                    -- Reference to the booking ID
+    `room_id` INT(10) UNSIGNED NOT NULL,                       -- Reference to the room ID
+    `from_date` DATE NOT NULL,                                 -- Booking start date
+    `to_date` DATE NOT NULL,                                   -- Booking end date
+    `price` FLOAT NOT NULL                                     -- Price for the stay
+);
+-- Insert sample data into ht_bookings
+INSERT INTO ht_bookings (`id`, `created_at`, `order_total`, `paid_total`, `remark`, `customer_detail_id`) VALUES
+(1, '2024-05-22 00:00:00', 1000, 1000, 'Test', 7),
+(2, '2024-05-24 00:00:00', 700, 700, 'Test Update Api', 3),
+(3, '2024-05-25 00:00:00', 3544, 3544, 'Test', 2),
+(4, '2024-05-23 00:00:00', 500, 500, 'Test Api', 3),
+(5, '0000-00-00 00:00:00', 446, 446, 'Test', 2),
+(6, '0000-00-00 00:00:00', 344, 455, 'test', 1),
+(7, '0000-00-00 00:00:00', 5000, 2000, 'NT', 1);
+
+
+
+-- Insert sample data into ht_booking_details
+INSERT INTO ht_booking_details (`id`, `booking_id`, `room_id`, `from_date`, `to_date`, `price`) VALUES
+(1, 1, 1, '2024-05-22', '2024-05-24', 1000),
+(2, 2, 2, '2024-05-24', '2024-05-25', 700),
+(3, 3, 3, '2024-05-25', '2024-05-26', 3544),
+(4, 4, 4, '2024-05-23', '2024-05-24', 500),
+(5, 5, 5, '2024-05-24', '2024-05-25', 446),
+(6, 6, 6, '2024-05-25', '2024-05-26', 344),
+(7, 7, 7, '2024-05-26', '2024-05-27', 5000);
+
+
 --View table for invoice extract
 
 Create view ht_invoices_view as

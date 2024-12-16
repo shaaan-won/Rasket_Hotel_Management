@@ -20,12 +20,7 @@
 // $result = $db->query("SELECT * FROM reservations");
 // $result = $result->fetch_all(MYSQLI_ASSOC);
 
-// function getCheckInDate($id) {
-// 	global $db;
-// 	$result = $db->query("SELECT check_in FROM reservations WHERE id = $id");
-// 	$result = $result->fetch_all(MYSQLI_ASSOC);
-// 	return $result[0]["check_in"];
-// }
+
 
 ?>
 
@@ -382,6 +377,7 @@
 
 		$('.guest-name').on('change', function() {
 			$(this).find('.input-field').val($(this).find('option:selected').text());
+			
 		});
 		$('.room-name').on('change', function() {
 			$(this).find('.input-field').val($(this).find('option:selected').text());
@@ -397,7 +393,7 @@
 			let total = qty * price;
 			$('#total').text(total);
 		})
-
+		// $("select").select2();
 
 		// $('#unit-price').on('change', function() {
 		// 	$('#roomprice').on('click', function() {
@@ -461,7 +457,7 @@
 				$('#amount-due').text(balanceDue);
 			})
 		});
-		// $("select").select2();
+		
 
 	});
 </script>

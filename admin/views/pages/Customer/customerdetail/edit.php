@@ -5,6 +5,7 @@ echo Html::link(["class"=>"btn btn-success", "route"=>"customerdetail", "text"=>
 echo Page::context_open();
 echo Form::open(["route"=>"customerdetail/update"]);
 	echo Form::input(["label"=>"Id","type"=>"hidden","name"=>"id","value"=>"$customerdetail->id"]);
+	echo Form::input(["label"=>"Name","type"=>"text","name"=>"name","value"=>"$customerdetail->name"]);
 	echo Form::input(["label"=>"First Name","type"=>"text","name"=>"first_name","value"=>"$customerdetail->first_name"]);
 	echo Form::input(["label"=>"Last Name","type"=>"text","name"=>"last_name","value"=>"$customerdetail->last_name"]);
 	echo Form::input(["label"=>"Email","type"=>"text","name"=>"email","value"=>"$customerdetail->email"]);

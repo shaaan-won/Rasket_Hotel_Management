@@ -12,6 +12,9 @@ public function save($data,$file){
 	if(isset($data["create"])){
 	$errors=[];
 /*
+	if(!preg_match("/^[\s\S]+$/",$_POST["txtName"])){
+		$errors["name"]="Invalid name";
+	}
 	if(!preg_match("/^[\s\S]+$/",$_POST["txtFirstName"])){
 		$errors["first_name"]="Invalid first_name";
 	}
@@ -37,6 +40,7 @@ public function save($data,$file){
 */		global $now;
 		if(count($errors)==0){
 			$customerdetail=new CustomerDetail();
+		$customerdetail->name=$data["name"];
 		$customerdetail->first_name=$data["first_name"];
 		$customerdetail->last_name=$data["last_name"];
 		$customerdetail->email=$data["email"];
@@ -61,6 +65,9 @@ public function update($data,$file){
 	if(isset($data["update"])){
 	$errors=[];
 /*
+	if(!preg_match("/^[\s\S]+$/",$_POST["txtName"])){
+		$errors["name"]="Invalid name";
+	}
 	if(!preg_match("/^[\s\S]+$/",$_POST["txtFirstName"])){
 		$errors["first_name"]="Invalid first_name";
 	}
@@ -83,10 +90,11 @@ public function update($data,$file){
 		$errors["address"]="Invalid address";
 	}
 
-*/		global $now;
+*/	 	global $now;
 		if(count($errors)==0){
 			$customerdetail=new CustomerDetail();
 			$customerdetail->id=$data["id"];
+		$customerdetail->name=$data["name"];
 		$customerdetail->first_name=$data["first_name"];
 		$customerdetail->last_name=$data["last_name"];
 		$customerdetail->email=$data["email"];
