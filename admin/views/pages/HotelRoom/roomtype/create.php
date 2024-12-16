@@ -5,6 +5,7 @@ echo Html::link(["class"=>"btn btn-success", "route"=>"roomtype", "text"=>"Manag
 echo Page::context_open();
 echo Form::open(["route"=>"roomtype/save"]);
 	echo Form::input(["label"=>"Name","type"=>"text","name"=>"name"]);
+	echo Form::input(["label"=>"Room Price","type"=>"text","name"=>"room_price"]);
 	echo Form::input(["label"=>"Description","type"=>"textarea","name"=>"description"]);
 	echo Form::input(["label"=>"Max Occupancy","type"=>"text","name"=>"max_occupancy"]);
 

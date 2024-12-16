@@ -16,21 +16,29 @@
 // echo Form::close();
 // echo Page::context_close();
 // echo Page::body_close();
+// global $db;
+// $result = $db->query("SELECT * FROM reservations");
+// $result = $result->fetch_all(MYSQLI_ASSOC);
+
+// function getCheckInDate($id) {
+// 	global $db;
+// 	$result = $db->query("SELECT check_in FROM reservations WHERE id = $id");
+// 	$result = $result->fetch_all(MYSQLI_ASSOC);
+// 	return $result[0]["check_in"];
+// }
+
 ?>
 
 <style>
-	/* body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 0;
-        } */
 	.invoice-container {
-		max-width: 800px;
+		max-width: 850px;
 		margin: auto;
 		padding: 20px;
 		border: 1px solid #ddd;
 		border-radius: 5px;
 		background-color: #f9f9f9;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
 	}
 
 	.header,
@@ -70,13 +78,128 @@
 		background-color: #f2f2f2;
 	}
 
+	/* General styling for input fields */
 	.input-field {
 		width: 100%;
-		border: none;
-		background: transparent;
-		padding: 0;
-		margin: 0;
-		font-size: inherit;
+		/* Makes the input field responsive */
+		padding: 10px 15px;
+		/* Adds inner padding for better spacing */
+		font-size: 16px;
+		/* Sets the font size for readability */
+		border: 1px solid #ccc;
+		/* Adds a light border */
+		border-radius: 5px;
+		/* Rounds the corners */
+		background-color: #f9f9f9;
+		/* Light background color */
+		color: #333;
+		/* Text color */
+		outline: none;
+		/* Removes the default blue outline */
+		transition: border-color 0.3s ease, box-shadow 0.3s ease;
+		/* Smooth transitions for hover/focus effects */
+	}
+
+	/* Style when the input is focused */
+	.input-field:focus {
+		border-color: #007BFF;
+		/* Highlight border on focus */
+		box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+		/* Adds a subtle shadow effect */
+	}
+
+	/* Placeholder styling (optional) */
+	.input-field::placeholder {
+		color: #aaa;
+		/* Light gray for placeholder text */
+	}
+
+	/* Optional: Input hover styling */
+	.input-field:hover {
+		border-color: #888;
+		/* Slightly darkens the border on hover */
+	}
+
+
+	#discount {
+		width: 100px;
+		margin-left: 10px;
+		margin-right: 10px;
+		font-size: 14px;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		text-align: center;
+		box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1);
+	}
+
+	#adds-item {
+		margin-left: 10px;
+		align-items: center;
+	}
+
+	.dlt-item {
+		margin-left: 10px;
+		align-items: center;
+	}
+
+	.invoice-container div {
+
+		/* Style for the select element */
+		select {
+			width: 100%;
+			/* Makes it responsive */
+			padding: 8px;
+			/* Adds some padding */
+			font-size: 16px;
+			/* Adjusts font size */
+			border: 1px solid #ccc;
+			/* Adds a light border */
+			border-radius: 5px;
+			/* Rounds the corners */
+			background-color: #f9f9f9;
+			/* Light background */
+			color: #333;
+			/* Text color */
+			appearance: none;
+			/* Hides default dropdown arrow for custom styling */
+			outline: none;
+			/* Removes the outline when focused */
+			cursor: pointer;
+			/* Makes it clear it's clickable */
+			transition: border-color 0.3s ease;
+			/* Smooth transition for hover/focus effects */
+		}
+
+		/* Style for the select element when focused */
+		select:focus {
+			border-color: #007BFF;
+			/* Highlight border on focus */
+			box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+			/* Add a subtle shadow effect */
+		}
+
+		/* Style for the option elements */
+		option {
+			padding: 8px;
+			/* Adds padding inside the dropdown options */
+			font-size: 14px;
+			/* Adjusts font size */
+			color: #333;
+			/* Text color */
+			background-color: #fff;
+			/* Background color */
+		}
+
+		/* Optional: Custom styling for hover or selection states (some browsers might not support this) */
+		option:hover {
+			background-color: #f1f1f1;
+			/* Light background on hover */
+		}
+
+	}
+
+	#items-body {
+		align-items: center;
 	}
 </style>
 
@@ -152,42 +275,65 @@
 					<th><Button class="btn btn-danger" id="clear-all">Clear All</Button></th>
 				</tr>
 			</thead>
-			<tbody id="items-body" class="items-body">
-				<!-- <tr class="item-row">
+			<!--<tbody id="items-body" class="items-body">
+				 <tr class="item-row">
 					<td><input type="text" class="input-field item-name" placeholder="Room Charges" value="Room Charges"></td>
 					<td><input type="number" class="input-field quantity" placeholder="3" oninput="updateTotals()"></td>
 					<td><input type="number" class="input-field unit-price" placeholder="100.00" step="0.01" oninput="updateTotals()"></td>
 					<td class="total">300.00</td>
 					<td style="align-items: center;"><Button class="btn btn-info ">Delete</Button></td>
-				</tr> -->
+				</tr> 
+			</tbody>-->
+			<thead>
+				<tr>
+					<th id="item-name">
+						<input type="text" class="input-field" placeholder="Room Charges& Other Services"><br>
+						<?php echo RoomType::html_select("cmbRoomType");
+						?>
+					</th>
+					<th id="qty_night"><input type="number" class="input-field" value="1"></th>
+					<th id="price_night">
+						<input type="number" class="input-field " step="10" placeholder="100.00" id="unit-price"><br>
+						<span id="roomprice"><?php echo RoomType::html_select1("cmbroomprice"); ?></span>
+					</th>
+					<th><span id="total">0.00</span></th>
+					<th><button type="button" class="btn btn-primary" id="adds-item">Add +</button></th>
+				</tr>
+			</thead>
+			<tbody id="items-body">
+
 			</tbody>
 		</table>
-		<button type="button" class="btn btn-primary" id="adds-item">Add +</button>
+
 	</div>
 	<div class="summary table-responsive">
 		<table>
 			<tr>
 				<td><strong>Subtotal</strong></td>
-				<td id="subtotal">300.00</td>
+				<td id="subtotal">00.00</td>
 			</tr>
 			<tr>
 				<td>
 					<strong>Discount</strong>
-					<input type="text" class="input-field" placeholder="Enter Discount" id="discount" value="10">
+					<input type="text" placeholder="Enter Discount" id="discount" value="10">
 				</td>
-				<td id="discount-amount">0.00</td>
+				<td><span id="discount-amount">00.00</span></td>
 			</tr>
 			<tr>
-				<td><strong>Tax (10%)</strong></td>
-				<td id="tax">30.00</td>
+				<td><strong>Tax (05%)</strong></td>
+				<td id="tax">00.00</td>
+			</tr>
+			<tr>
+				<td><strong>Amount Paid</strong></td>
+				<td id="amount-paid-td"><input type="number" class="input-field" id="amount-paid" placeholder="Enter Amount Paid" step="100"></td>
 			</tr>
 			<tr>
 				<td><strong>Amount Due</strong></td>
-				<td id="amount-due">330.00</td>
+				<td id="amount-due">00.00</td>
 			</tr>
 			<tr>
 				<td><strong>Total</strong></td>
-				<td id="grand-total">330.00</td>
+				<td id="grand-total">000.00</td>
 			</tr>
 		</table>
 		<div class="center" style="margin-top: 20px; text-align: center; font-size: 14px;font-family: Arial, sans-serif; font-weight: bold;">
@@ -210,14 +356,7 @@
 
 <script>
 	$(document).ready(function() {
-		$('.guest-name').on('change', function() {
-			$(this).find('.input-field').val($(this).find('option:selected').text());
-		});
-		$('.room-name').on('change', function() {
-			$(this).find('.input-field').val($(this).find('option:selected').text());
-		});
-	})
-	$(document).ready(function() {
+		//check in and check out
 		// Ensure check-out date is always after check-in date
 		$('#check-in-date, #check-out-date').on('change', function() {
 			const checkInDate = new Date($('#check-in-date').val());
@@ -230,72 +369,102 @@
 		});
 
 		// Highlight the field when it is empty or invalid
-		$('input[type="date"]').on('blur', function() {
+		$('input[type="date"]').on('change', function() {
 			if (!$(this).val()) {
-				$(this).css('border-color', 'red');
+				$(this).css('background-color', 'red');
 			} else {
-				$(this).css('border-color', '#ccc');
+				$(this).css('background-color', '#f2f2f2');
 			}
 		});
-	});
 
-	$(document).ready(function() {
+
+		// guest and room 
+
+		$('.guest-name').on('change', function() {
+			$(this).find('.input-field').val($(this).find('option:selected').text());
+		});
+		$('.room-name').on('change', function() {
+			$(this).find('.input-field').val($(this).find('option:selected').text());
+		});
+		$('#item-name').on('click', function() {
+			$(this).find('.input-field').val($(this).find('option:selected').text());
+		})
+
+		$('#price_night').on('click', function() {
+			$(this).find('.input-field').val($(this).find('option:selected').text());
+			let qty = $('#qty_night').find('.input-field').val();
+			let price = $('#price_night').find('.input-field').val();
+			let total = qty * price;
+			$('#total').text(total);
+		})
+
+
+		// $('#unit-price').on('change', function() {
+		// 	$('#roomprice').on('click', function() {
+		// 		$('#price_night').val($(this).find('option:selected').text());
+		// 	})
+		// 	let qty = $('#qty_night').find('.input-field').val();
+		// 	let price = $('#unit-price').val();
+		// 	let total = qty * price;
+		// 	$('#total').text(total);
+		// })
+
+		
+		$('#clear-all').on('click', function() {
+			$('.item-row').empty();
+		})
+
+		// add item delete all delete
 		$('#adds-item').on('click', function() {
-			// $("this").html("Add +");
+
+			let item = $('#item-name').find('.input-field').val();
+			let qty = $('#qty_night').find('.input-field').val();
+			let price = $('#price_night').find('.input-field').val();
+			let total = $('#total').text();
 			$('#items-body').append(`
-				<tr class="item-row">
-					<td><input type="text" class="input-field item-name" placeholder="Item Name"></td>
-					<td><input type="number" class="input-field quantity" placeholder="0" id="quantity"></td>
-					<td><input type="number" class="input-field unit-price" placeholder="0.00" step="100" id="unit-price"></td>
-					<td class="total">0.00</td>
-					<td style="align-items: center;"><Button class="btn btn-info dlt-item " id="dlt-item">Delete</Button></td>
-				</tr>
-			`);
+							<tr class="item-row">
+						<td>${item}</td>
+						<td>${qty}</td>
+						<td>${price}</td>
+						<td class="total-by-section">${total}</td>
+						<td style="align-items: center;"><Button class="btn btn-info dlt-item">Delete</Button></td>	
+								</tr>
+							`);
+			// Delete item row
 			$('.item-row').on('click', '.dlt-item', function() {
 				$(this).closest('tr').remove();
 			});
-		});
+			// subtotal 
+			let subtotal = 0;
+			$('.item-row').each(function() {
+				let total = parseFloat($(this).find('.total-by-section').text());
+				subtotal += total;
+			});
+			$('#subtotal').text(subtotal);
+			//discount amount
+			let discount = $('#discount').val();
+			let discountAmount = (discount / 100) * subtotal;
+			$('#discount-amount').text(discountAmount);
 
+			// tax
+			let tax = subtotal * 0.05;
+			$('#tax').text(tax);
 
-		$('#btnProcessinvoice').on('click', function() {
-			$('#processInvoiceModal').modal('show');
+			// grand total
+			var grandTotal = subtotal - discountAmount + tax;
+			$('#grand-total').text(grandTotal);
+
+			//amount paid
+			$('#amount-paid').on('change', function() {
+				let amountPaid = $(this).val();
+				let balanceDue = grandTotal - amountPaid;
+				$('#amount-due').text(balanceDue);
+			})
 		});
+		// $("select").select2();
+
 	});
 </script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-
-<!-- <script>
-	function updateTotals() {
-		const itemRows = document.querySelectorAll('.item-row');
-		let subtotal = 0;
-
-		itemRows.forEach(row => {
-			const quantity = parseFloat(row.querySelector('.quantity').value) || 0;
-			const price = parseFloat(row.querySelector('.unit-price').value) || 0;
-			const total = quantity * price;
-			row.querySelector('.total').textContent = total.toFixed(2);
-			subtotal += total;
-		});
-
-		const tax = subtotal * 0.10;
-		const grandTotal = subtotal + tax;
-
-		document.getElementById('subtotal').textContent = subtotal.toFixed(2);
-		document.getElementById('tax').textContent = tax.toFixed(2);
-		document.getElementById('grand-total').textContent = grandTotal.toFixed(2);
-	}
-
-	function addItem() {
-		const tableBody = document.getElementById('items-body');
-		const newRow = document.createElement('tr');
-		newRow.classList.add('item-row');
-		newRow.innerHTML = `
-                <td><input type="text" class="input-field item-name" placeholder="Item Name"></td>
-                <td><input type="number" class="input-field quantity" placeholder="0" oninput="updateTotals()"></td>
-                <td><input type="number" class="input-field unit-price" placeholder="0.00" step="0.01" oninput="updateTotals()"></td>
-                <td class="total">0.00</td>
-            `;
-		tableBody.appendChild(newRow);
-	}
-</script> -->
-<!-- <script src="js/cart.js"></script> -->
+<script src="<?= $base_url ?>/js/cart.js"></script>

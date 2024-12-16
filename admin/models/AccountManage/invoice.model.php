@@ -115,7 +115,7 @@ class Invoice extends Model implements JsonSerializable{
 		$total_pages = ceil($total_rows /$perpage);
 		$top = ($page - 1)*$perpage;
 		$result=$db->query("select id,name,customer_detail_id,customer_detail_name,reservation_id,total_amount,tax_amount,payment_status,created_at,updated_at from {$tx}invoices $criteria limit $top,$perpage");
-		$html="<table class='table'>";
+		$html="<div class='table-responsive'><table class='table'>";
 			$html.="<tr><th colspan='3'>".Html::link(["class"=>"btn btn-success","route"=>"invoice/create","text"=>"New Invoice"])."</th></tr>";
 		if($action){
 			$html.="<tr><th>Id</th><th>Name</th><th>Customer Detail Id</th><th>Customer Detail Name</th><th>Reservation Id</th><th>Total Amount</th><th>Tax Amount</th><th>Payment Status</th><th>Created At</th><th>Updated At</th><th>Action</th></tr>";
@@ -126,14 +126,14 @@ class Invoice extends Model implements JsonSerializable{
 			$action_buttons = "";
 			if($action){
 				$action_buttons = "<td><div class='btn-group' style='display:flex;'>";
-				$action_buttons.= Event::button(["name"=>"show", "value"=>"Show", "class"=>"btn btn-info", "route"=>"invoice/show/$invoice->id"]);
+				$action_buttons.= Event::button(["name"=>"show", "value"=>"Show", "class"=>"btn btn-info open-modal", "route"=>"invoice/show/$invoice->id"]);
 				$action_buttons.= Event::button(["name"=>"edit", "value"=>"Edit", "class"=>"btn btn-primary", "route"=>"invoice/edit/$invoice->id"]);
 				$action_buttons.= Event::button(["name"=>"delete", "value"=>"Delete", "class"=>"btn btn-danger", "route"=>"invoice/confirm/$invoice->id"]);
 				$action_buttons.= "</div></td>";
 			}
 			$html.="<tr><td>$invoice->id</td><td>$invoice->name</td><td>$invoice->customer_detail_id</td><td>$invoice->customer_detail_name</td><td>$invoice->reservation_id</td><td>$invoice->total_amount</td><td>$invoice->tax_amount</td><td>$invoice->payment_status</td><td>$invoice->created_at</td><td>$invoice->updated_at</td> $action_buttons</tr>";
 		}
-		$html.="</table>";
+		$html.="</table> </div>";
 		$html.= pagination($page,$total_pages);
 		return $html;
 	}

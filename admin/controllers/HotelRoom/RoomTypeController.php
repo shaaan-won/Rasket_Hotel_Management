@@ -15,6 +15,9 @@ public function save($data,$file){
 	if(!preg_match("/^[\s\S]+$/",$_POST["txtName"])){
 		$errors["name"]="Invalid name";
 	}
+	if(!preg_match("/^[\s\S]+$/",$data["room_price"])){
+		$errors["room_price"]="Invalid room_price";
+	}
 	if(!preg_match("/^[\s\S]+$/",$data["description"])){
 		$errors["description"]="Invalid description";
 	}
@@ -26,6 +29,7 @@ public function save($data,$file){
 		if(count($errors)==0){
 			$roomtype=new RoomType();
 		$roomtype->name=$data["name"];
+		$roomtype->room_price=$data["room_price"];
 		$roomtype->description=$data["description"];
 		$roomtype->max_occupancy=$data["max_occupancy"];
 		$roomtype->created_at=$now;
@@ -48,6 +52,9 @@ public function update($data,$file){
 	if(!preg_match("/^[\s\S]+$/",$_POST["txtName"])){
 		$errors["name"]="Invalid name";
 	}
+	if(!preg_match("/^[\s\S]+$/",$data["room_price"])){
+		$errors["room_price"]="Invalid room_price";
+	}
 	if(!preg_match("/^[\s\S]+$/",$data["description"])){
 		$errors["description"]="Invalid description";
 	}
@@ -55,12 +62,12 @@ public function update($data,$file){
 		$errors["max_occupancy"]="Invalid max_occupancy";
 	}
 
-*/
-		global $now;
+*/	global $now;
 		if(count($errors)==0){
 			$roomtype=new RoomType();
 			$roomtype->id=$data["id"];
 		$roomtype->name=$data["name"];
+		$roomtype->room_price=$data["room_price"];
 		$roomtype->description=$data["description"];
 		$roomtype->max_occupancy=$data["max_occupancy"];
 		$roomtype->created_at=$now;

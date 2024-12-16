@@ -116,7 +116,7 @@ class CustomerDetail extends Model implements JsonSerializable{
 		$total_pages = ceil($total_rows /$perpage);
 		$top = ($page - 1)*$perpage;
 		$result=$db->query("select id,first_name,last_name,email,phone,id_card_type_name,id_card_number,address,created_at,updated_at from {$tx}customer_details $criteria limit $top,$perpage");
-		$html="<table class='table'>";
+		$html="<div class='table-responsive'><table class='table'>";
 			$html.="<tr><th colspan='3'>".Html::link(["class"=>"btn btn-success","route"=>"customerdetail/create","text"=>"New CustomerDetail"])."</th></tr>";
 		if($action){
 			$html.="<tr><th>Id</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Phone</th><th>Id Card Type Name</th><th>Id Card Number</th><th>Address</th><th>Created At</th><th>Updated At</th><th>Action</th></tr>";
@@ -134,7 +134,7 @@ class CustomerDetail extends Model implements JsonSerializable{
 			}
 			$html.="<tr><td>$customerdetail->id</td><td>$customerdetail->first_name</td><td>$customerdetail->last_name</td><td>$customerdetail->email</td><td>$customerdetail->phone</td><td>$customerdetail->id_card_type_name</td><td>$customerdetail->id_card_number</td><td>$customerdetail->address</td><td>$customerdetail->created_at</td><td>$customerdetail->updated_at</td> $action_buttons</tr>";
 		}
-		$html.="</table>";
+		$html.="</table></div>";
 		$html.= pagination($page,$total_pages);
 		return $html;
 	}

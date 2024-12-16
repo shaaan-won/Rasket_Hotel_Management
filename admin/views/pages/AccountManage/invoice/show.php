@@ -84,7 +84,7 @@
                 </td>
                 <td>
                     <p><strong> Date:</strong>
-                        <?php echo date("F d, Y",strtotime($invoice->created_at)); ?>
+                        <?php echo date("F d, Y", strtotime($invoice->created_at)); ?>
                     </p>
                 </td>
             </tr>

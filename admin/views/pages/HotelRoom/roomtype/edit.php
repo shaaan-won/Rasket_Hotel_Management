@@ -6,6 +6,7 @@ echo Page::context_open();
 echo Form::open(["route"=>"roomtype/update"]);
 	echo Form::input(["label"=>"Id","type"=>"hidden","name"=>"id","value"=>"$roomtype->id"]);
 	echo Form::input(["label"=>"Name","type"=>"text","name"=>"name","value"=>"$roomtype->name"]);
+	echo Form::input(["label"=>"Room Price","type"=>"text","name"=>"room_price","value"=>"$roomtype->room_price"]);
 	echo Form::input(["label"=>"Description","type"=>"textarea","name"=>"description","value"=>"$roomtype->description"]);
 	echo Form::input(["label"=>"Max Occupancy","type"=>"text","name"=>"max_occupancy","value"=>"$roomtype->max_occupancy"]);
 

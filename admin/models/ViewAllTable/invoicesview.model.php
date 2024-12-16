@@ -10,8 +10,6 @@ class InvoicesView extends Model implements JsonSerializable{
 	public $payment_status;
 	public $created_at;
 	public $updated_at;
-	public $reservation_name;
-	public $room_name;
 	public $room_number;
 	public $room_type_name;
 	public $check_in;
@@ -20,7 +18,7 @@ class InvoicesView extends Model implements JsonSerializable{
 
 	public function __construct(){
 	}
-	public function set($id,$name,$customer_detail_id,$customer_detail_name,$reservation_id,$total_amount,$tax_amount,$payment_status,$created_at,$updated_at,$reservation_name,$room_name,$room_number,$room_type_name,$check_in,$check_out,$reservation_total_amount){
+	public function set($id,$name,$customer_detail_id,$customer_detail_name,$reservation_id,$total_amount,$tax_amount,$payment_status,$created_at,$updated_at,$room_number,$room_type_name,$check_in,$check_out,$reservation_total_amount){
 		$this->id=$id;
 		$this->name=$name;
 		$this->customer_detail_id=$customer_detail_id;
@@ -31,8 +29,6 @@ class InvoicesView extends Model implements JsonSerializable{
 		$this->payment_status=$payment_status;
 		$this->created_at=$created_at;
 		$this->updated_at=$updated_at;
-		$this->reservation_name=$reservation_name;
-		$this->room_name=$room_name;
 		$this->room_number=$room_number;
 		$this->room_type_name=$room_type_name;
 		$this->check_in=$check_in;
@@ -42,12 +38,12 @@ class InvoicesView extends Model implements JsonSerializable{
 	}
 	public function save(){
 		global $db,$tx;
-		$db->query("insert into {$tx}invoices_view(name,customer_detail_id,customer_detail_name,reservation_id,total_amount,tax_amount,payment_status,created_at,updated_at,reservation_name,room_name,room_number,room_type_name,check_in,check_out,reservation_total_amount)values('$this->name','$this->customer_detail_id','$this->customer_detail_name','$this->reservation_id','$this->total_amount','$this->tax_amount','$this->payment_status','$this->created_at','$this->updated_at','$this->reservation_name','$this->room_name','$this->room_number','$this->room_type_name','$this->check_in','$this->check_out','$this->reservation_total_amount')");
+		$db->query("insert into {$tx}invoices_view(name,customer_detail_id,customer_detail_name,reservation_id,total_amount,tax_amount,payment_status,created_at,updated_at,room_number,room_type_name,check_in,check_out,reservation_total_amount)values('$this->name','$this->customer_detail_id','$this->customer_detail_name','$this->reservation_id','$this->total_amount','$this->tax_amount','$this->payment_status','$this->created_at','$this->updated_at','$this->room_number','$this->room_type_name','$this->check_in','$this->check_out','$this->reservation_total_amount')");
 		return $db->insert_id;
 	}
 	public function update(){
 		global $db,$tx;
-		$db->query("update {$tx}invoices_view set name='$this->name',customer_detail_id='$this->customer_detail_id',customer_detail_name='$this->customer_detail_name',reservation_id='$this->reservation_id',total_amount='$this->total_amount',tax_amount='$this->tax_amount',payment_status='$this->payment_status',created_at='$this->created_at',updated_at='$this->updated_at',reservation_name='$this->reservation_name',room_name='$this->room_name',room_number='$this->room_number',room_type_name='$this->room_type_name',check_in='$this->check_in',check_out='$this->check_out',reservation_total_amount='$this->reservation_total_amount' where id='$this->id'");
+		$db->query("update {$tx}invoices_view set name='$this->name',customer_detail_id='$this->customer_detail_id',customer_detail_name='$this->customer_detail_name',reservation_id='$this->reservation_id',total_amount='$this->total_amount',tax_amount='$this->tax_amount',payment_status='$this->payment_status',created_at='$this->created_at',updated_at='$this->updated_at',room_number='$this->room_number',room_type_name='$this->room_type_name',check_in='$this->check_in',check_out='$this->check_out',reservation_total_amount='$this->reservation_total_amount' where id='$this->id'");
 	}
 	public static function delete($id){
 		global $db,$tx;
@@ -58,7 +54,7 @@ class InvoicesView extends Model implements JsonSerializable{
 	}
 	public static function all(){
 		global $db,$tx;
-		$result=$db->query("select id,name,customer_detail_id,customer_detail_name,reservation_id,total_amount,tax_amount,payment_status,created_at,updated_at,reservation_name,room_name,room_number,room_type_name,check_in,check_out,reservation_total_amount from {$tx}invoices_view");
+		$result=$db->query("select id,name,customer_detail_id,customer_detail_name,reservation_id,total_amount,tax_amount,payment_status,created_at,updated_at,room_number,room_type_name,check_in,check_out,reservation_total_amount from {$tx}invoices_view");
 		$data=[];
 		while($invoicesview=$result->fetch_object()){
 			$data[]=$invoicesview;
@@ -68,7 +64,7 @@ class InvoicesView extends Model implements JsonSerializable{
 	public static function pagination($page=1,$perpage=10,$criteria=""){
 		global $db,$tx;
 		$top=($page-1)*$perpage;
-		$result=$db->query("select id,name,customer_detail_id,customer_detail_name,reservation_id,total_amount,tax_amount,payment_status,created_at,updated_at,reservation_name,room_name,room_number,room_type_name,check_in,check_out,reservation_total_amount from {$tx}invoices_view $criteria limit $top,$perpage");
+		$result=$db->query("select id,name,customer_detail_id,customer_detail_name,reservation_id,total_amount,tax_amount,payment_status,created_at,updated_at,room_number,room_type_name,check_in,check_out,reservation_total_amount from {$tx}invoices_view $criteria limit $top,$perpage");
 		$data=[];
 		while($invoicesview=$result->fetch_object()){
 			$data[]=$invoicesview;
@@ -83,7 +79,7 @@ class InvoicesView extends Model implements JsonSerializable{
 	}
 	public static function find($id){
 		global $db,$tx;
-		$result =$db->query("select id,name,customer_detail_id,customer_detail_name,reservation_id,total_amount,tax_amount,payment_status,created_at,updated_at,reservation_name,room_name,room_number,room_type_name,check_in,check_out,reservation_total_amount from {$tx}invoices_view where id='$id'");
+		$result =$db->query("select id,name,customer_detail_id,customer_detail_name,reservation_id,total_amount,tax_amount,payment_status,created_at,updated_at,room_number,room_type_name,check_in,check_out,reservation_total_amount from {$tx}invoices_view where id='$id'");
 		$invoicesview=$result->fetch_object();
 			return $invoicesview;
 	}
@@ -107,8 +103,6 @@ class InvoicesView extends Model implements JsonSerializable{
 		Payment Status:$this->payment_status<br> 
 		Created At:$this->created_at<br> 
 		Updated At:$this->updated_at<br> 
-		Reservation Name:$this->reservation_name<br> 
-		Room Name:$this->room_name<br> 
 		Room Number:$this->room_number<br> 
 		Room Type Name:$this->room_type_name<br> 
 		Check In:$this->check_in<br> 
@@ -135,13 +129,13 @@ class InvoicesView extends Model implements JsonSerializable{
 		list($total_rows)=$count_result->fetch_row();
 		$total_pages = ceil($total_rows /$perpage);
 		$top = ($page - 1)*$perpage;
-		$result=$db->query("select id,name,customer_detail_id,customer_detail_name,reservation_id,total_amount,tax_amount,payment_status,created_at,updated_at,reservation_name,room_name,room_number,room_type_name,check_in,check_out,reservation_total_amount from {$tx}invoices_view $criteria limit $top,$perpage");
+		$result=$db->query("select id,name,customer_detail_id,customer_detail_name,reservation_id,total_amount,tax_amount,payment_status,created_at,updated_at,room_number,room_type_name,check_in,check_out,reservation_total_amount from {$tx}invoices_view $criteria limit $top,$perpage");
 		$html="<table class='table'>";
 			$html.="<tr><th colspan='3'>".Html::link(["class"=>"btn btn-success","route"=>"invoicesview/create","text"=>"New InvoicesView"])."</th></tr>";
 		if($action){
-			$html.="<tr><th>Id</th><th>Name</th><th>Customer Detail Id</th><th>Customer Detail Name</th><th>Reservation Id</th><th>Total Amount</th><th>Tax Amount</th><th>Payment Status</th><th>Created At</th><th>Updated At</th><th>Reservation Name</th><th>Room Name</th><th>Room Number</th><th>Room Type Name</th><th>Check In</th><th>Check Out</th><th>Reservation Total Amount</th><th>Action</th></tr>";
+			$html.="<tr><th>Id</th><th>Name</th><th>Customer Detail Id</th><th>Customer Detail Name</th><th>Reservation Id</th><th>Total Amount</th><th>Tax Amount</th><th>Payment Status</th><th>Created At</th><th>Updated At</th><th>Room Number</th><th>Room Type Name</th><th>Check In</th><th>Check Out</th><th>Reservation Total Amount</th><th>Action</th></tr>";
 		}else{
-			$html.="<tr><th>Id</th><th>Name</th><th>Customer Detail Id</th><th>Customer Detail Name</th><th>Reservation Id</th><th>Total Amount</th><th>Tax Amount</th><th>Payment Status</th><th>Created At</th><th>Updated At</th><th>Reservation Name</th><th>Room Name</th><th>Room Number</th><th>Room Type Name</th><th>Check In</th><th>Check Out</th><th>Reservation Total Amount</th></tr>";
+			$html.="<tr><th>Id</th><th>Name</th><th>Customer Detail Id</th><th>Customer Detail Name</th><th>Reservation Id</th><th>Total Amount</th><th>Tax Amount</th><th>Payment Status</th><th>Created At</th><th>Updated At</th><th>Room Number</th><th>Room Type Name</th><th>Check In</th><th>Check Out</th><th>Reservation Total Amount</th></tr>";
 		}
 		while($invoicesview=$result->fetch_object()){
 			$action_buttons = "";
@@ -152,7 +146,7 @@ class InvoicesView extends Model implements JsonSerializable{
 				$action_buttons.= Event::button(["name"=>"delete", "value"=>"Delete", "class"=>"btn btn-danger", "route"=>"invoicesview/confirm/$invoicesview->id"]);
 				$action_buttons.= "</div></td>";
 			}
-			$html.="<tr><td>$invoicesview->id</td><td>$invoicesview->name</td><td>$invoicesview->customer_detail_id</td><td>$invoicesview->customer_detail_name</td><td>$invoicesview->reservation_id</td><td>$invoicesview->total_amount</td><td>$invoicesview->tax_amount</td><td>$invoicesview->payment_status</td><td>$invoicesview->created_at</td><td>$invoicesview->updated_at</td><td>$invoicesview->reservation_name</td><td>$invoicesview->room_name</td><td>$invoicesview->room_number</td><td>$invoicesview->room_type_name</td><td>$invoicesview->check_in</td><td>$invoicesview->check_out</td><td>$invoicesview->reservation_total_amount</td> $action_buttons</tr>";
+			$html.="<tr><td>$invoicesview->id</td><td>$invoicesview->name</td><td>$invoicesview->customer_detail_id</td><td>$invoicesview->customer_detail_name</td><td>$invoicesview->reservation_id</td><td>$invoicesview->total_amount</td><td>$invoicesview->tax_amount</td><td>$invoicesview->payment_status</td><td>$invoicesview->created_at</td><td>$invoicesview->updated_at</td><td>$invoicesview->room_number</td><td>$invoicesview->room_type_name</td><td>$invoicesview->check_in</td><td>$invoicesview->check_out</td><td>$invoicesview->reservation_total_amount</td> $action_buttons</tr>";
 		}
 		$html.="</table>";
 		$html.= pagination($page,$total_pages);
@@ -160,7 +154,7 @@ class InvoicesView extends Model implements JsonSerializable{
 	}
 	static function html_row_details($id){
 		global $db,$tx,$base_url;
-		$result =$db->query("select id,name,customer_detail_id,customer_detail_name,reservation_id,total_amount,tax_amount,payment_status,created_at,updated_at,reservation_name,room_name,room_number,room_type_name,check_in,check_out,reservation_total_amount from {$tx}invoices_view where id={$id}");
+		$result =$db->query("select id,name,customer_detail_id,customer_detail_name,reservation_id,total_amount,tax_amount,payment_status,created_at,updated_at,room_number,room_type_name,check_in,check_out,reservation_total_amount from {$tx}invoices_view where id={$id}");
 		$invoicesview=$result->fetch_object();
 		$html="<table class='table'>";
 		$html.="<tr><th colspan=\"2\">InvoicesView Show</th></tr>";
@@ -174,8 +168,6 @@ class InvoicesView extends Model implements JsonSerializable{
 		$html.="<tr><th>Payment Status</th><td>$invoicesview->payment_status</td></tr>";
 		$html.="<tr><th>Created At</th><td>$invoicesview->created_at</td></tr>";
 		$html.="<tr><th>Updated At</th><td>$invoicesview->updated_at</td></tr>";
-		$html.="<tr><th>Reservation Name</th><td>$invoicesview->reservation_name</td></tr>";
-		$html.="<tr><th>Room Name</th><td>$invoicesview->room_name</td></tr>";
 		$html.="<tr><th>Room Number</th><td>$invoicesview->room_number</td></tr>";
 		$html.="<tr><th>Room Type Name</th><td>$invoicesview->room_type_name</td></tr>";
 		$html.="<tr><th>Check In</th><td>$invoicesview->check_in</td></tr>";
